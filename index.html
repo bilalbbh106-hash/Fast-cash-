@@ -1,1 +1,156 @@
-jjkk
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fast Cash - كسب النقاط والسحب</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- شريط التنقل -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <i class="fas fa-bolt"></i>
+                <span>Fast Cash</span>
+            </div>
+            <div class="user-info">
+                <span id="userPoints">0</span>
+                <i class="fas fa-coins"></i>
+                <span id="userName">زائر</span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- الهيدر -->
+    <header class="hero">
+        <div class="hero-content">
+            <h1>اكسب النقاط وسحب الجوائز الحقيقية!</h1>
+            <p>شارك في العروض، شاهد الإعلانات، واحصل على نقاط يمكنك سحبها كبطاقات فيزا أو حسابات مميزة</p>
+            <div class="cta-buttons">
+                <button class="btn-primary" onclick="scrollToSection('offers')">
+                    ابدأ الكسب الآن
+                </button>
+                <button class="btn-secondary" onclick="scrollToSection('withdrawal')">
+                    تصفح جوائز السحب
+                </button>
+            </div>
+        </div>
+        <div class="hero-image">
+            <img src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="كسب النقاط">
+        </div>
+    </header>
+
+    <!-- قسم العروض -->
+    <section id="offers" class="section">
+        <h2 class="section-title">العروض المتاحة</h2>
+        <div class="offers-grid" id="offersContainer">
+            <!-- سيتم ملؤها بالعروض من Supabase -->
+        </div>
+    </section>
+
+    <!-- قسم السحب -->
+    <section id="withdrawal" class="section bg-light">
+        <h2 class="section-title">مركز السحب</h2>
+        <div class="withdrawal-grid" id="withdrawalContainer">
+            <!-- سيتم ملؤها بعناصر السحب من Supabase -->
+        </div>
+    </section>
+
+    <!-- قسم الإعلانات -->
+    <section id="ads" class="section">
+        <h2 class="section-title">الإعلانات الممولة</h2>
+        <div class="ads-grid" id="adsContainer">
+            <!-- سيتم ملؤها بالإعلانات من Supabase -->
+        </div>
+    </section>
+
+    <!-- قسم المميزات -->
+    <section class="features section bg-light">
+        <h2 class="section-title">مميزات Fast Cash</h2>
+        <div class="features-grid">
+            <div class="feature-card">
+                <i class="fas fa-shield-alt"></i>
+                <h3>آمن ومضمون</h3>
+                <p>نظام آمن لضمان حقوقك في السحب والكسب</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-bolt"></i>
+                <h3>سحب سريع</h3>
+                <p>معالجة طلبات السحب خلال 24 ساعة</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-gift"></i>
+                <h3>جوائز متنوعة</h3>
+                <p>بطاقات فيزا، حسابات، رصيد، وأكثر</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-headset"></i>
+                <h3>دعم فني</h3>
+                <p>فريق دعم متاح على فيسبوك لمساعدتك</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- الفوتر -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Fast Cash</h3>
+                <p>منصة رائدة في كسب النقاط والسحب الإلكتروني</p>
+            </div>
+            <div class="footer-section">
+                <h3>التواصل</h3>
+                <p>لطلبات السحب، راسلنا على فيسبوك:</p>
+                <a href="#" id="facebookLink" class="facebook-btn">
+                    <i class="fab fa-facebook"></i> صفحة الفيسبوك
+                </a>
+            </div>
+            <div class="footer-section">
+                <h3>روابط سريعة</h3>
+                <a href="#offers">العروض</a>
+                <a href="#withdrawal">السحب</a>
+                <a href="#ads">الإعلانات</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2024 Fast Cash. جميع الحقوق محفوظة</p>
+        </div>
+    </footer>
+
+    <!-- نافذة تأكيد السحب -->
+    <div id="withdrawModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h3>تأكيد عملية السحب</h3>
+            <p id="withdrawMessage">ستقوم بسحب <span id="itemPoints">0</span> نقطة</p>
+            <p>رصيدك الحالي: <span id="currentPoints">0</span> نقطة</p>
+            <div class="modal-actions">
+                <button class="btn-primary" onclick="confirmWithdrawal()">تأكيد السحب</button>
+                <button class="btn-secondary" onclick="closeModal()">إلغاء</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- نافذة رابط الإحالة -->
+    <div id="referralModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h3>رابط الإحالة</h3>
+            <p>شارك هذا الرابط لتحصل على نقاط عندما ينضم أصدقاؤك:</p>
+            <div class="referral-link">
+                <input type="text" id="referralInput" readonly>
+                <button onclick="copyReferralLink()">
+                    <i class="fas fa-copy"></i> نسخ
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    <script src="supabase.js"></script>
+    <script src="script.js"></script>
+</body>
+  </html>
