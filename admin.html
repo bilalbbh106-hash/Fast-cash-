@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة تحكم Fast Cash</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        .admin-container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+        }
+        
+        .admin-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #4a90e2;
+        }
+        
+        .tab-btn {
+            padding: 10px 20px;
+            background: #f0f0f0;
+            border: none;
+            border-radius: 5px 5px 0 0;
+            cursor: pointer;
+            font-weight: 500;
+        }
+        
+        .tab-btn.active {
+            background: #4a90e2;
+            color: white;
+        }
+        
+        .tab-content {
+            display: none;
+            padding: 20px;
+            background: white;
+            border-radius: 0 0 5px 5px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+        
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-family: 'Cairo', sans-serif;
+        }
+        
+        .form-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+        
+        .image-preview {
+            max-width: 200px;
+            margin-top: 10px;
+            border-radius: 5px;
+        }
+        
+        .items-list {
+            display: grid;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .item-card {
+            background: white;
+            padding: 15px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .item-actions button {
+            margin-left: 10px;
+            padding: 5px 10px;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+        
+        .delete-btn {
+            background: #e74c3c;
+            color: white;
+        }
+        
+        .edit-btn {
+            background: #3498db;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-container">
+        <h1><i class="fas fa-cogs"></i> لوحة تحكم Fast Cash</h1>
+        
+        <div class="admin-tabs">
+            <button class="tab-btn active" onclick="switchTab('offers')">العروض</button>
+            <button class="tab-btn" onclick="switchTab('withdrawal')">السحب</button>
+            <button class="tab-btn" onclick="switchTab('ads')">الإعلانات</button>
+            <button class="tab-btn" onclick="switchTab('users')">المستخدمين</button>
+        </div>
+        
+        <!-- قسم العروض -->
+        <div id="offers-tab" class="tab-content active">
+            <h2>إضافة عرض جديد</h2>
+            <form id="offerForm">
+                <div class="form-group">
+                    <label>صورة العرض:</label>
+                    <input type="file" id="offerImage" accept="image/*">
+                    <img id="offerImagePreview" class="image-preview" style="display: none;">
+                </div>
+                <div class="form-group">
+                    <label>عنوان العرض:</label>
+                    <input type="text" id="offerTitle" required>
+                </div>
+                <div class="form-group">
+                    <label>الوصف:</label>
+                    <textarea id="offerDescription" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label>رابط العرض:</label>
+                    <input type="url" id="offerLink">
+                </div>
+                <div class="form-group">
+                    <label>النقاط:</label>
+                    <input type="number" id="offerPoints" required min="1">
+                </div>
+                <div class="form-group">
+                    <label>وقت التأخير (ساعات):</label>
+                    <input type="number" id="offerDelay" value="1" min="0">
+                </div>
+                <button type="submit" class="btn-primary">إضافة العرض</button>
+            </form>
+            
+            <h3>العروض الحالية</h3>
+            <div id="offersList" class="items-list">
+                <!-- قائمة العروض -->
+            </div>
+        </div>
+        
+        <!-- قسم السحب -->
+        <div id="withdrawal-tab" class="tab-content">
+            <h2>إضافة عنصر سحب جديد</h2>
+            <form id="withdrawalForm">
+                <div class="form-group">
+                    <label>صورة الجائزة:</label>
+                    <input type="file" id="withdrawalImage" accept="image/*">
+                    <img id="withdrawalImagePreview" class="image-preview" style="display: none;">
+                </div>
+                <div class="form-group">
+                    <label>اسم الجائزة:</label>
+                    <input type="text" id="withdrawalTitle" required>
+                </div>
+                <div class="form-group">
+                    <label>الوصف:</label>
+                    <textarea id="withdrawalDescription" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label>النقاط المطلوبة:</label>
+                    <input type="number" id="withdrawalPoints" required min="1">
+                </div>
+                <div class="form-group">
+                    <label>نوع الجائزة:</label>
+                    <select id="withdrawalType">
+                        <option value="visa">بطاقة فيزا</option>
+                        <option value="google">حساب جوجل</option>
+                        <option value="paypal">باي بال</option>
+                        <option value="other">أخرى</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn-primary">إضافة الجائزة</button>
+            </form>
+            
+            <h3>عناصر السحب الحالية</h3>
+            <div id="withdrawalList" class="items-list">
+                <!-- قائمة عناصر السحب -->
+            </div>
+        </div>
+        
+        <!-- قسم الإعلانات -->
+        <div id="ads-tab" class="tab-content">
+            <h2>إضافة إعلان جديد</h2>
+            <form id="adForm">
+                <div class="form-group">
+                    <label>صورة الإعلان:</label>
+                    <input type="file" id="adImage" accept="image/*">
+                    <img id="adImagePreview" class="image-preview" style="display: none;">
+                </div>
+                <div class="form-group">
+                    <label>عنوان الإعلان:</label>
+                    <input type="text" id="adTitle" required>
+                </div>
+                <div class="form-group">
+                    <label>الوصف:</label>
+                    <textarea id="adDescription" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label>رابط الإعلان:</label>
+                    <input type="url" id="adLink" required>
+                </div>
+                <div class="form-group">
+                    <label>النقاط:</label>
+                    <input type="number" id="adPoints" required min="1">
+                </div>
+                <button type="submit" class="btn-primary">إضافة الإعلان</button>
+            </form>
+            
+            <h3>الإعلانات الحالية</h3>
+            <div id="adsList" class="items-list">
+                <!-- قائمة الإعلانات -->
+            </div>
+        </div>
+        
+        <!-- قسم المستخدمين -->
+        <div id="users-tab" class="tab-content">
+            <h2>إدارة المستخدمين</h2>
+            <div class="form-group">
+                <input type="text" id="searchUser" placeholder="بحث عن مستخدم...">
+            </div>
+            <div id="usersList" class="items-list">
+                <!-- قائمة المستخدمين -->
+            </div>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    <script src="supabase.js"></script>
+    <script src="admin.js"></script>
+</body>
+</html>
